@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      canvas {
+        width: 1000px;
+        height: 800px;
+        border: solid green 3px;
+      }
+    </style>
+  </head>
+  <body id='body'>
+    <canvas id="canvas"></canvas>
+  </body>
+  <script type="text/javascript">
+  var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    // game area boundary
+    canvas.width = 1000;
+    canvas.height = 800;
+
+// tick function
+var x = 100;
+var y = 100;
+var xdirection = 1;
+var ydirection = 1;
+var r = 20;
+var dx = 4;
+var dy = 4;
+
+var paddle1x = 10;
+var paddle1y = 10;
+var paddle2x = 960;
+var paddle2y = 10;
+
+//set where the listening will take place
+var keyAction = document.getElementById('body');
+//this is what happens when the click is heard
+keyAction.addEventListener('keypress', function(evt) {
+console.log(evt.keyCode);
+switch (evt.keyCode) {
+  case 97:
+      paddle1y -= 10;
+    break;
+  case 122:
+      paddle1y += 10;
+    break;
+  case 107:
+      paddle2y -= 10;
+    break;
+  case 109:
+      paddle2y += 10;
+    break;
+  // default:
+
+}
+})
+
+
+  function tick(dt) {
+
+      // clear screen
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      //paddle 1
+          ctx.fillStyle = 'blue';
+          ctx.fillRect(paddle1x, paddle1y, 30, 200);
+
+      // paddle 2
+          ctx.fillStyle = 'blue';
+          ctx.fillRect(paddle2x, paddle2y, 30, 200);
+
+      // halfway line
+          ctx.lineWidth = 10;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(500, 0);
+          ctx.lineTo(500, 800);
+          ctx.strokeStyle = 'red';
+          ctx.stroke();
+
+      // ball
+          ctx.beginPath();
+          ctx.arc(x,y,r,0,2*Math.PI);
+          ctx.fillStyle = 'green';
+          ctx.fill();
+          ctx.strokeStyle = 'black';
+          ctx.stroke();
+
+      // ball logic
+      if (x+r >= canvas.width || x-r <= 0) {
+        xdirection = xdirection * -1;
+      }
+      if (y+r >= canvas.height || y-r <= 0) {
+        ydirection = ydirection * -1;
+      }
+      if (xdirection == 1) {
+        x += dx;
+        // console.log(x);
+      } else {
+        x -= dx;
+        // console.log(x);
+      }
+      if (ydirection == 1) {
+        y += dy;
+        // console.log(x);
+      } else {
+        y -= dy;
+        // console.log(y);
+      }
+
+      requestAnimationFrame(tick);
+  }
+
+        requestAnimationFrame(tick);
+  </script>
+</html>
